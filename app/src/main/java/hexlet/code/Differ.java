@@ -1,12 +1,15 @@
 package hexlet.code;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Differ {
     public static String generate(File json1, File json2) throws IOException {
