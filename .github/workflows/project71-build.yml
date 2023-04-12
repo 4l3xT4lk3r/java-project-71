@@ -1,9 +1,11 @@
 name: project71-build
+
 on: push
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Copy project
         uses: actions/checkout@v3
@@ -19,6 +21,7 @@ jobs:
           build-root-directory: app
       - run: ls -l ${{github.workspace}}
       - run: ls -l ${{github.workspace}}/app/
+      - run: ls -l ${{github.workspace}}/app/build
       - run: ls -l ${{github.workspace}}/build/reports/jacoco/test/jacocoTestReport.xml
       - name: Publish code coverage
         uses: paambaati/codeclimate-action@v3.2.0
