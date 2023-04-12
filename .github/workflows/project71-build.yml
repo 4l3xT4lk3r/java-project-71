@@ -19,7 +19,7 @@ jobs:
         with:
           arguments: build
           build-root-directory: app
-      - run: ls -l ${{github.workspace}}/app/build/reports/jacoco
+      - run: ls -l ${{github.workspace}}/app/build/reports
       - name: Publish code coverage
         uses: paambaati/codeclimate-action@v3.2.0
         env:
