@@ -12,12 +12,22 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Differ {
-    public static String generate(File json1, File json2) throws IOException {
+    public static String generate(File json1, File json2) {
+        if (json1 == null || json2 == null) {
+            return null;
+        }
         ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> map1 = mapper.readValue(json1, new TypeReference<TreeMap<String, Object>>() {
-        });
-        Map<String, Object> map2 = mapper.readValue(json2, new TypeReference<TreeMap<String, Object>>() {
-        });
+        Map<String, Object> map1;
+        Map<String, Object> map2;
+        try {
+            map1 = mapper.readValue(json1, new TypeReference<TreeMap<String, Object>>() {
+            });
+            map2 = mapper.readValue(json2, new TypeReference<TreeMap<String, Object>>() {
+            });
+        } catch (IOException exception) {
+            return null;
+        }
+
         TreeSet<String> keySet = new TreeSet<>(map1.keySet());
         keySet.addAll(new TreeSet<>(map2.keySet()));
         List<String> list = new ArrayList<>();
