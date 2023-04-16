@@ -14,18 +14,17 @@ public final class TestParser {
     private File file1;
     private File file2;
 
+    private String expectedPlain;
+    private String expectedNested;
+
     private ObjectMapper mapper = new ObjectMapper();
+
 
     @BeforeEach
     public void init() {
         file1 = new File("src/test/resources/plainJsonFile1.json");
         file2 = new File("src/test/resources/plainJsonFile2.json");
-        Parser.setMapper(mapper);
-    }
-
-    @Test
-    public void testParsePlainGoodJson() {
-        String expected = "{\n"
+        expectedPlain = "{\n"
                 + "  - follow: false\n"
                 + "    host: hexlet.io\n"
                 + "  - proxy: 123.234.53.22\n"
@@ -33,13 +32,7 @@ public final class TestParser {
                 + "  + timeout: 20\n"
                 + "  + verbose: true\n"
                 + "}";
-        String actual = Parser.parse(file1, file2);
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testParseNestedGoodJson() {
-        String expected = "{\n"
+        expectedNested = "{\n"
                 + "    chars1: [a, b, c]\n"
                 + "  - chars2: [d, e, f]\n"
                 + "  + chars2: false\n"
@@ -64,10 +57,21 @@ public final class TestParser {
                 + "  - setting3: true\n"
                 + "  + setting3: none\n"
                 + "}";
+        Parser.setMapper(mapper);
+    }
+
+    @Test
+    public void testParseGoodPlainJson() {
+        String actual = Parser.parse(file1, file2);
+        assertEquals(expectedPlain, actual);
+    }
+
+    @Test
+    public void testParseGoodNestedJson() {
         file1 = new File("src/test/resources/nestedJsonFile1.json");
         file2 = new File("src/test/resources/nestedJsonFile2.json");
         String actual = Parser.parse(file1, file2);
-        assertEquals(expected, actual);
+        assertEquals(expectedNested, actual);
     }
 
     @Test
@@ -87,26 +91,26 @@ public final class TestParser {
     }
 
     @Test
-    public void testParseGoodYaml() {
-        String expected = "{\n"
-                + "  - follow: false\n"
-                + "    host: hexlet.io\n"
-                + "  - proxy: 123.234.53.22\n"
-                + "  - timeout: 50\n"
-                + "  + timeout: 20\n"
-                + "  + verbose: true\n"
-                + "}";
+    public void testParseGoodPlainYaml() {
         file1 = new File("src/test/resources/plainYamlFile1.yml");
-        file2 = new File("src/test/resources/plainYamlfile2.yml");
+        file2 = new File("src/test/resources/plainYamlFile2.yml");
         Parser.setMapper(new YAMLMapper());
         String actual = Parser.parse(file1, file2);
-        assertEquals(expected, actual);
+        assertEquals(expectedPlain, actual);
+    }
+    @Test
+    public void testParseGoodNestedYaml() {
+        file1 = new File("src/test/resources/nestedYamlFile1.yml");
+        file2 = new File("src/test/resources/nestedYamlFile2.yml");
+        Parser.setMapper(new YAMLMapper());
+        String actual = Parser.parse(file1, file2);
+        assertEquals(expectedNested, actual);
     }
 
     @Test
     public void testParseWrongYml() {
         file1 = new File("src/test/resources/plainYamlWrongFile.yml");
-        file2 = new File("src/test/resources/plainYamlfile2.yml");
+        file2 = new File("src/test/resources/plainYamlFile2.yml");
         Parser.setMapper(new YAMLMapper());
         String actual;
         actual = Parser.parse(file1, file2);
