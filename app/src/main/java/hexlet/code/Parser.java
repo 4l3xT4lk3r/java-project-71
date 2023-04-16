@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class Parser {
 
     private static ObjectMapper mapper;
+
     public static void setMapper(ObjectMapper objectMapper) {
         mapper = objectMapper;
     }
@@ -38,17 +39,23 @@ public class Parser {
         List<String> list = new ArrayList<>();
         for (String key : keySet) {
             if (!map2.containsKey(key)) {
-                list.add("- " + key + ": " + map1.get(key).toString());
+                list.add("  - " + key + ": " + map1.get(key).toString());
             } else if (!map1.containsKey(key)) {
-                list.add("+ " + key + ": " + map2.get(key).toString());
+                list.add("  + " + key + ": " + map2.get(key).toString());
             } else if (map2.containsKey(key) && map1.containsKey(key)) {
                 Object v1 = map1.get(key);
                 Object v2 = map2.get(key);
+                if (v1 == null) {
+                    v1 = "null";
+                }
+                if (v2 == null) {
+                    v2 = "null";
+                }
                 if (v1.toString().equals(v2.toString())) {
-                    list.add("  " + key + ": " + map1.get(key).toString());
+                    list.add("    " + key + ": " + v1);
                 } else {
-                    list.add("- " + key + ": " + map1.get(key).toString());
-                    list.add("+ " + key + ": " + map2.get(key).toString());
+                    list.add("  - " + key + ": " + v1);
+                    list.add("  + " + key + ": " + v2);
                 }
             }
         }
