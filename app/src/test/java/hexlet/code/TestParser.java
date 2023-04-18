@@ -2,10 +2,12 @@ package hexlet.code;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import hexlet.code.formatters.Stylish;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import hexlet.code.formatters.Formatter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -17,11 +19,14 @@ public final class TestParser {
     private String expectedPlain;
     private String expectedNested;
 
+    private Formatter formatter;
+
     private ObjectMapper mapper = new ObjectMapper();
 
 
     @BeforeEach
     public void init() {
+        formatter = new Stylish();
         file1 = new File("src/test/resources/plainJsonFile1.json");
         file2 = new File("src/test/resources/plainJsonFile2.json");
         expectedPlain = "{\n"
@@ -62,7 +67,7 @@ public final class TestParser {
 
     @Test
     public void testParseGoodPlainJson() {
-        String actual = Parser.parse(file1, file2);
+        String actual = Parser.parse(file1, file2, formatter);
         assertEquals(expectedPlain, actual);
     }
 
@@ -70,7 +75,7 @@ public final class TestParser {
     public void testParseGoodNestedJson() {
         file1 = new File("src/test/resources/nestedJsonFile1.json");
         file2 = new File("src/test/resources/nestedJsonFile2.json");
-        String actual = Parser.parse(file1, file2);
+        String actual = Parser.parse(file1, file2, formatter);
         assertEquals(expectedNested, actual);
     }
 
@@ -78,7 +83,7 @@ public final class TestParser {
     public void testParseFileNotExist() {
         file2 = new File("FileNotExist.json");
         String actual;
-        actual = Parser.parse(file1, file2);
+        actual = Parser.parse(file1, file2, formatter);
         assertNull(actual);
     }
 
@@ -86,7 +91,7 @@ public final class TestParser {
     public void testParseWrongJson() {
         file1 = new File("src/test/resources/plainWrongJsonFile.json");
         String actual;
-        actual = Parser.parse(file1, file2);
+        actual = Parser.parse(file1, file2, formatter);
         assertNull(actual);
     }
 
@@ -95,7 +100,7 @@ public final class TestParser {
         file1 = new File("src/test/resources/plainYamlFile1.yml");
         file2 = new File("src/test/resources/plainYamlFile2.yml");
         Parser.setMapper(new YAMLMapper());
-        String actual = Parser.parse(file1, file2);
+        String actual = Parser.parse(file1, file2, formatter);
         assertEquals(expectedPlain, actual);
     }
     @Test
@@ -103,7 +108,16 @@ public final class TestParser {
         file1 = new File("src/test/resources/nestedYamlFile1.yml");
         file2 = new File("src/test/resources/nestedYamlFile2.yml");
         Parser.setMapper(new YAMLMapper());
-        String actual = Parser.parse(file1, file2);
+        String actual = Parser.parse(file1, file2, formatter);
+        assertEquals(expectedNested, actual);
+    }
+
+    @Test
+    public void testParseGoodEqualYaml() {
+        file1 = new File("src/test/resources/nestedYamlFile1.yml");
+        file2 = new File("src/test/resources/nestedYamlFile2.yml");
+        Parser.setMapper(new YAMLMapper());
+        String actual = Parser.parse(file1, file2, formatter);
         assertEquals(expectedNested, actual);
     }
 
@@ -113,7 +127,7 @@ public final class TestParser {
         file2 = new File("src/test/resources/plainYamlFile2.yml");
         Parser.setMapper(new YAMLMapper());
         String actual;
-        actual = Parser.parse(file1, file2);
+        actual = Parser.parse(file1, file2, formatter);
         assertNull(actual);
     }
 }

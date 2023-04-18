@@ -2,15 +2,13 @@ package hexlet.code;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hexlet.code.formatters.Formatter;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.TreeMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.List;
-import java.util.ArrayList;
-
 
 public class Parser {
 
@@ -20,7 +18,7 @@ public class Parser {
         mapper = objectMapper;
     }
 
-    public static String parse(File file1, File file2) {
+    public static String parse(File file1, File file2, Formatter formatter) {
         if (file1 == null || file2 == null) {
             return null;
         }
@@ -36,12 +34,13 @@ public class Parser {
         }
         TreeSet<String> keySet = new TreeSet<>(map1.keySet());
         keySet.addAll(new TreeSet<>(map2.keySet()));
-        List<String> list = new ArrayList<>();
+        TreeMap<String, TreeMap<Integer, Object>> diff = new TreeMap<>();
         for (String key : keySet) {
+            TreeMap<Integer, Object> changes = new TreeMap<>();
             if (!map2.containsKey(key)) {
-                list.add("  - " + key + ": " + map1.get(key).toString());
+                changes.put(-1, map1.get(key));
             } else if (!map1.containsKey(key)) {
-                list.add("  + " + key + ": " + map2.get(key).toString());
+                changes.put(1, map2.get(key));
             } else if (map2.containsKey(key) && map1.containsKey(key)) {
                 Object v1 = map1.get(key);
                 Object v2 = map2.get(key);
@@ -52,13 +51,14 @@ public class Parser {
                     v2 = "null";
                 }
                 if (v1.toString().equals(v2.toString())) {
-                    list.add("    " + key + ": " + v1);
+                    changes.put(0, map1.get(key));
                 } else {
-                    list.add("  - " + key + ": " + v1);
-                    list.add("  + " + key + ": " + v2);
+                    changes.put(-1, map1.get(key));
+                    changes.put(1, map2.get(key));
                 }
             }
+            diff.put(key, changes);
         }
-        return "{\n" + String.join("\n", list) + "\n}";
+        return formatter.format(diff);
     }
 }

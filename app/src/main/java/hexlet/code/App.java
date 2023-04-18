@@ -2,6 +2,9 @@ package hexlet.code;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import hexlet.code.formatters.Formatter;
+import hexlet.code.formatters.Plain;
+import hexlet.code.formatters.Stylish;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -15,7 +18,7 @@ import java.util.concurrent.Callable;
 public final class App implements Callable<Integer> {
     @Option(names = {"-t", "--type"},
             paramLabel = "file type",
-            description = "file format for comparing files json/yml [default:json]")
+            description = "file format for comparing files json/yaml [default:json]")
     private String fileType = "json";
     @Option(names = {"-f", "--format"},
             paramLabel = "format",
@@ -29,10 +32,21 @@ public final class App implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception {
-        ObjectMapper mapper = fileType.equals("yml") ? new YAMLMapper() : new ObjectMapper();
+        ObjectMapper mapper = fileType.equals("yaml") ? new YAMLMapper() : new ObjectMapper();
+        Formatter formatter;
+        switch (format) {
+            case "stylish":
+                formatter = new Stylish();
+                break;
+            case "plain":
+                formatter = new Plain();
+                break;
+            default:
+                formatter = new Stylish();
+        }
         Parser.setMapper(mapper);
-        String s = Parser.parse(new File(filepath1), new File(filepath2));
-        System.out.println(s);
+        String diff = Parser.parse(new File(filepath1), new File(filepath2), formatter);
+        System.out.println(diff);
         return 0;
     }
 
