@@ -1,8 +1,6 @@
 package hexlet.code;
 
-import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.formatters.Formatter;
 
@@ -28,7 +26,7 @@ public class Parser {
             });
             map2 = mapper.readValue(file2, new TypeReference<TreeMap<String, Object>>() {
             });
-        }catch (IllegalArgumentException | IOException exception) {
+        } catch (IllegalArgumentException | IOException exception) {
             return exception.getMessage();
         }
         TreeSet<String> keySet = new TreeSet<>(map1.keySet());

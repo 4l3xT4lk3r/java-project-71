@@ -44,8 +44,8 @@ public final class TestParserPlainJson {
     public void testParseWrongJson() {
         file1 = new File("src/test/resources/plainWrongJsonFile.json");
         String actual = Parser.parse(file1, file2, formatter);
-        expected = "Unexpected character ('\"' (code 34)): was expecting comma to separate Object entries\n" +
-                " at [Source: (File); line: 3, column: 4]";
+        expected = "Unexpected character ('\"' (code 34)): was expecting comma to separate Object entries\n"
+                + " at [Source: (File); line: 3, column: 4]";
         assertEquals(expected, actual);
     }
 }
