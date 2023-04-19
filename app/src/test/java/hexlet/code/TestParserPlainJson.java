@@ -16,6 +16,7 @@ public final class TestParserPlainJson {
     private File file2;
     private String expected;
     private Formatter formatter;
+
     @BeforeEach
     public void init() {
         formatter = new Stylish();
@@ -43,6 +44,8 @@ public final class TestParserPlainJson {
     public void testParseWrongJson() {
         file1 = new File("src/test/resources/plainWrongJsonFile.json");
         String actual = Parser.parse(file1, file2, formatter);
-        assertEquals("File src/test/resources/plainWrongJsonFile.json is corrupted!", actual);
+        expected = "Unexpected character ('\"' (code 34)): was expecting comma to separate Object entries\n" +
+                " at [Source: (File); line: 3, column: 4]";
+        assertEquals(expected, actual);
     }
 }

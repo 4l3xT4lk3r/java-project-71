@@ -22,7 +22,7 @@ public final class TestParserCommon {
         File file1 = new File("FileNotExist.json");
         File file2 = new File("src/test/resources/nestedJsonFile1.json");
         String actual = Parser.parse(file1, file2, new Stylish());
-        assertEquals("File FileNotExist.json not found!", actual);
+        assertEquals("FileNotExist.json (No such file or directory)", actual);
     }
 
     @Test
@@ -30,6 +30,6 @@ public final class TestParserCommon {
         File file1 = null;
         File file2 = new File("src/test/resources/nestedJsonFile1.json");
         String actual = Parser.parse(file1, file2, new Plain());
-        assertEquals("File1 is null!", actual);
+        assertEquals("argument \"src\" is null", actual);
     }
 }

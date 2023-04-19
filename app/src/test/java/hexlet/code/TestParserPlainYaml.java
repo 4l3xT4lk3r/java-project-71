@@ -59,7 +59,13 @@ public final class TestParserPlainYaml {
     @Test
     public void testParseWrongYaml() {
         file1 = new File("src/test/resources/plainYamlWrongFile.yml");
-        expected = "File src/test/resources/plainYamlWrongFile.yml is corrupted!";
+        expected = """
+                mapping values are not allowed here
+                 in 'reader', line 2, column 12:
+                        verbose: true
+                               ^
+
+                 at [Source: (File); line: 2, column: 12]""";
         String actual = Parser.parse(file1, file2, formatter);
         assertEquals(expected, actual);
     }

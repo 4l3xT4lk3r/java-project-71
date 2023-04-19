@@ -26,22 +26,10 @@ public class Parser {
         try {
             map1 = mapper.readValue(file1, new TypeReference<TreeMap<String, Object>>() {
             });
-        } catch (IllegalArgumentException exception) {
-            return "File1 is null!";
-        } catch (StreamReadException | DatabindException exception) {
-            return "File " + file1 + " is corrupted!";
-        } catch (IOException exception) {
-            return "File " + file1 + " not found!";
-        }
-        try {
             map2 = mapper.readValue(file2, new TypeReference<TreeMap<String, Object>>() {
             });
-        } catch (IllegalArgumentException exception) {
-            return "File2 is null!";
-        } catch (StreamReadException | DatabindException exception) {
-            return "File " + file2 + " is corrupted!";
-        } catch (IOException exception) {
-            return "File " + file2 + " not found!";
+        }catch (IllegalArgumentException | IOException exception) {
+            return exception.getMessage();
         }
         TreeSet<String> keySet = new TreeSet<>(map1.keySet());
         keySet.addAll(new TreeSet<>(map2.keySet()));
@@ -71,5 +59,17 @@ public class Parser {
             diff.put(key, changes);
         }
         return formatter.format(diff);
+    }
+
+    private Map<String, Object> readFileToMap(File file) throws IOException {
+        Map<String, Object> map;
+        TypeReference<TreeMap<String, Object>> typeReference = new TypeReference<>() {
+        };
+        try {
+            map = mapper.readValue(file, typeReference);
+        } catch (IOException exception) {
+            throw exception;
+        }
+        return map;
     }
 }
