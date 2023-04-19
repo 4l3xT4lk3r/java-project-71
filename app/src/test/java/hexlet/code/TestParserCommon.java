@@ -1,0 +1,35 @@
+package hexlet.code;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import hexlet.code.formatters.Plain;
+import hexlet.code.formatters.Stylish;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.io.File;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public final class TestParserCommon {
+
+    @BeforeEach
+    public void init() {
+        Parser.setMapper(new ObjectMapper());
+    }
+
+    @Test
+    public void testParseFileNotExist() {
+        File file1 = new File("FileNotExist.json");
+        File file2 = new File("src/test/resources/nestedJsonFile1.json");
+        String actual = Parser.parse(file1, file2, new Stylish());
+        assertEquals("File FileNotExist.json not found!", actual);
+    }
+
+    @Test
+    public void testParseFileIsNull() {
+        File file1 = null;
+        File file2 = new File("src/test/resources/nestedJsonFile1.json");
+        String actual = Parser.parse(file1, file2, new Plain());
+        assertEquals("File1 is null!", actual);
+    }
+}

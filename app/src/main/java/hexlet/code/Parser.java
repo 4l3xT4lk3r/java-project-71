@@ -1,6 +1,8 @@
 package hexlet.code;
 
+import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.formatters.Formatter;
 
@@ -19,18 +21,27 @@ public class Parser {
     }
 
     public static String parse(File file1, File file2, Formatter formatter) {
-        if (file1 == null || file2 == null) {
-            return null;
-        }
         Map<String, Object> map1;
         Map<String, Object> map2;
         try {
             map1 = mapper.readValue(file1, new TypeReference<TreeMap<String, Object>>() {
             });
+        } catch (IllegalArgumentException exception) {
+            return "File1 is null!";
+        } catch (StreamReadException | DatabindException exception) {
+            return "File " + file1 + " is corrupted!";
+        } catch (IOException exception) {
+            return "File " + file1 + " not found!";
+        }
+        try {
             map2 = mapper.readValue(file2, new TypeReference<TreeMap<String, Object>>() {
             });
+        } catch (IllegalArgumentException exception) {
+            return "File2 is null!";
+        } catch (StreamReadException | DatabindException exception) {
+            return "File " + file2 + " is corrupted!";
         } catch (IOException exception) {
-            return null;
+            return "File " + file2 + " not found!";
         }
         TreeSet<String> keySet = new TreeSet<>(map1.keySet());
         keySet.addAll(new TreeSet<>(map2.keySet()));
