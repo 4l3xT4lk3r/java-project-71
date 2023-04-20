@@ -15,8 +15,8 @@ Features:
 
 ## Demos
 
-- Comparing two plain json files [Demo](https://asciinema.org/a/weeT1r17kRr505oeopZtDLmzF)
-- Comparing two plain yaml files [Demo](https://asciinema.org/a/w6fy9xnI1mnBO3NsUcZ1Rm9Vt)
+- Comparing two json files [Demo](https://asciinema.org/a/rxOkxJWfKzuzlabxqqxtETYMU)
+- Comparing two yaml files [Demo](https://asciinema.org/a/Ytx3xM7JIncNnsFz5EAfTP6zm)
 
 ## Requirements
 
