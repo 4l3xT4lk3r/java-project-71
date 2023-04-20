@@ -29,9 +29,9 @@ Features:
 - Download code arhive: [zip](https://github.com/4l3xT4lk3r/java-project-71/archive/refs/heads/main.zip)
 - Unpack code `unzip -x java-project-71-main.zip`
 - Open project folder and go to `app` directory
-- Run `make build`. It makes tar archive with ready to use build `gendiff-$version-SNAPSHOT.tar` in `build/distributions`
-- Extract build `tar xf gendiff-$version-SNAPSHOT.tar`. Open build folder. There are two folders: bin and lib.
+- Run `make build`. It makes tar archive with ready to use build `app-$version-SNAPSHOT.tar` in `build/distributions`
+- Extract build `tar xf app-$version-SNAPSHOT.tar`. Open build folder. There are two folders: bin and lib.
 
 ## Using application
 
-- To use go to bin directory and run `./gendiff`
+- To use go to bin directory and run `./app`
