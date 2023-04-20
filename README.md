@@ -31,8 +31,7 @@ Features:
 - Open project folder and go to `app` directory
 - Run `make build`. It makes tar archive with ready to use build `gendiff-$version-SNAPSHOT.tar` in `build/distributions`
 - Extract build `tar xf gendiff-$version-SNAPSHOT.tar`. Open build folder. There are two folders: bin and lib.
-- To use go to bin directory and run `./gendiff`
 
 ## Using application
 
-- Execute in app directory `make run-dist` or run `java -jar app-$version.jar`
+- To use go to bin directory and run `./gendiff`
