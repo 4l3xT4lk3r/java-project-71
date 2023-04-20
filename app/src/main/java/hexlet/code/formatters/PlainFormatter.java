@@ -63,4 +63,3 @@ public final class PlainFormatter extends Formatter {
         return res;
     }
 }
-
