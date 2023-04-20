@@ -19,8 +19,9 @@ import java.util.concurrent.Callable;
 public final class App implements Callable<Integer> {
     @Option(names = {"-t", "--type"},
             paramLabel = "file type",
-            description = "file format for comparing files json/yaml [default:json]")
-    private String fileType = "json";
+            description = "file format for comparing files json/yaml [default:json]",
+            defaultValue = "json")
+    private String fileType;
     @Option(names = {"-f", "--format"},
             paramLabel = "format",
             description = "output format [default: stylish]",
@@ -30,7 +31,6 @@ public final class App implements Callable<Integer> {
     private String filepath1;
     @Parameters(paramLabel = "filepath2", description = "path to second file")
     private String filepath2;
-
     @Override
     public Integer call() throws Exception {
         ObjectMapper mapper = fileType.equals("yaml") ? new YAMLMapper() : new ObjectMapper();
