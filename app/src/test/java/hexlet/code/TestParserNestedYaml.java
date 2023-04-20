@@ -53,8 +53,8 @@ public final class TestParserNestedYaml {
     public void testParseGoodNestedYaml() {
         file1 = new File("src/test/resources/nestedYamlFile1.yml");
         file2 = new File("src/test/resources/nestedYamlFile2.yml");
-        Parser.setMapper(new YAMLMapper());
-        String actual = Parser.parse(file1, file2, formatter);
+        Differ.setMapper(new YAMLMapper());
+        String actual = Differ.parse(file1, file2, formatter);
         assertEquals(expected, actual);
     }
 }

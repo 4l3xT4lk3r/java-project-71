@@ -48,8 +48,8 @@ public final class App implements Callable<Integer> {
             default:
                 formatter = new StylishFormatter();
         }
-        Parser.setMapper(mapper);
-        String diff = Parser.parse(new File(filepath1), new File(filepath2), formatter);
+        Differ.setMapper(mapper);
+        String diff = Differ.parse(new File(filepath1), new File(filepath2), formatter);
         System.out.println(diff);
         return 0;
     }

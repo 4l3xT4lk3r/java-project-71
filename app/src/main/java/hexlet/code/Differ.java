@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-public class Parser {
+public class Differ {
     private static final int ADD = 1;
     private static final int REMOVE = -1;
     private static final int SAME = 0;

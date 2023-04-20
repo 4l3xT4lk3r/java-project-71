@@ -54,8 +54,8 @@ public final class TestParserNestedJsonStylish {
     public void testParseGoodNestedJson() {
         file1 = new File("src/test/resources/nestedJsonFile1.json");
         file2 = new File("src/test/resources/nestedJsonFile2.json");
-        Parser.setMapper(new ObjectMapper());
-        String actual = Parser.parse(file1, file2, formatter);
+        Differ.setMapper(new ObjectMapper());
+        String actual = Differ.parse(file1, file2, formatter);
         assertEquals(expected, actual);
     }
 
