@@ -22,3 +22,17 @@ Features:
 
 - &gt;= Java 17
 - &gt;= Gradle 7.4.2
+- &gt;= Gnu Make 4.3
+
+## Setup
+
+- Download code arhive: [zip](https://github.com/4l3xT4lk3r/java-project-71/archive/refs/heads/main.zip)
+- Unpack code `unzip -x java-project-71-main.zip`
+- Open project folder and go to `app` directory
+- Run `make build`. It makes tar archive with ready to use build `gendiff-$version-SNAPSHOT.tar` in `build/distributions`
+- Extract build `tar xf gendiff-$version-SNAPSHOT.tar`. Open build folder. There are two folders: bin and lib.
+- To use go to bin directory and run `./gendiff`
+
+## Using application
+
+- Execute in app directory `make run-dist` or run `java -jar app-$version.jar`
