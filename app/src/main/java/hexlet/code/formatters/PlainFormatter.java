@@ -48,6 +48,8 @@ public final class PlainFormatter extends Formatter {
             res = false;
         } else if (object instanceof Boolean) {
             res = false;
+        } else if (object == null) {
+            res = false;
         }
         return res;
     }
