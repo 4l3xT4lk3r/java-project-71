@@ -10,7 +10,7 @@ import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public final class TestParserNestedJson {
+public final class TestParserNestedJsonStylish {
 
     private File file1;
     private File file2;

@@ -27,9 +27,8 @@ public final class TestParserCommon {
 
     @Test
     public void testParseFileIsNull() {
-        File file1 = null;
         File file2 = new File("src/test/resources/nestedJsonFile1.json");
-        String actual = Parser.parse(file1, file2, new PlainFormatter());
+        String actual = Parser.parse(null, file2, new PlainFormatter());
         assertEquals("argument \"src\" is null", actual);
     }
 }
