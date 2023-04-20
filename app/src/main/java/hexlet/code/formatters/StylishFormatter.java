@@ -4,29 +4,38 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-public final class Stylish extends Formatter {
+public final class StylishFormatter extends Formatter {
+
+    private static final int ADD = 1;
+    private static final int REMOVE = -1;
+    private static final int UPDATE = -11;
+
+    private static final int SAME = 0;
+
     @Override
     public String format(TreeMap<String, TreeMap<Integer, Object>> diff) {
-        List<String> list = new ArrayList<>();
-        for (Map.Entry<String, TreeMap<Integer, Object>> entry : diff.entrySet()) {
-            String key = entry.getKey();
-            TreeMap<Integer, Object> changes = entry.getValue();
-            for (Map.Entry<Integer, Object> change : changes.entrySet()) {
-                String sign = "";
-                switch (change.getKey().toString()) {
-                    case "1":
-                        sign = "  + ";
-                        break;
-                    case "-1":
-                        sign = "  - ";
-                        break;
-                    default:
-                        sign = "    ";
-                }
-                list.add(sign + key + ": " + change.getValue());
-            }
-        }
+        List<String> list = diff.entrySet()
+                .stream()
+                .map(entry -> makeDiffString(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
         return "{\n" + String.join("\n", list) + "\n}";
+    }
+    private String makeDiffString(String key, TreeMap<Integer, Object> changes) {
+        String res;
+        String changesSignature = changes.keySet().stream().map(Object::toString).collect(Collectors.joining());
+        if (changesSignature.equals(Integer.toString(ADD))) {
+            res = String.format("\s\s+ %s: %s", key, changes.get(ADD));
+        } else if (changesSignature.equals(Integer.toString(REMOVE))) {
+            res = String.format("\s\s- %s: %s", key, changes.get(REMOVE));
+        } else if (changesSignature.equals(Integer.toString(UPDATE))) {
+            res = String.format(String.format("\s\s- %s: %s", key, changes.get(REMOVE)))
+                    + "\n"
+                    + String.format("\s\s+ %s: %s", key, changes.get(ADD));
+        } else {
+            res = String.format("\s\s\s\s%s: %s", key, changes.get(SAME));
+        }
+        return res;
     }
 }
