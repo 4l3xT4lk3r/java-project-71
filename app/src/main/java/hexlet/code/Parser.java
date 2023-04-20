@@ -58,16 +58,4 @@ public class Parser {
         }
         return formatter.format(diff);
     }
-
-    private Map<String, Object> readFileToMap(File file) throws IOException {
-        Map<String, Object> map;
-        TypeReference<TreeMap<String, Object>> typeReference = new TypeReference<>() {
-        };
-        try {
-            map = mapper.readValue(file, typeReference);
-        } catch (IOException exception) {
-            throw exception;
-        }
-        return map;
-    }
 }

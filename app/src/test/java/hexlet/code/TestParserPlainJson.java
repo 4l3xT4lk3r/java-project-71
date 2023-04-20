@@ -1,7 +1,7 @@
 package hexlet.code;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hexlet.code.formatters.Stylish;
+import hexlet.code.formatters.StylishFormatter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +19,7 @@ public final class TestParserPlainJson {
 
     @BeforeEach
     public void init() {
-        formatter = new Stylish();
+        formatter = new StylishFormatter();
         file1 = new File("src/test/resources/plainJsonFile1.json");
         file2 = new File("src/test/resources/plainJsonFile2.json");
         expected = """

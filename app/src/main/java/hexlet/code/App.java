@@ -3,8 +3,9 @@ package hexlet.code;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import hexlet.code.formatters.Formatter;
-import hexlet.code.formatters.Plain;
-import hexlet.code.formatters.Stylish;
+import hexlet.code.formatters.JsonFormatter;
+import hexlet.code.formatters.PlainFormatter;
+import hexlet.code.formatters.StylishFormatter;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -36,13 +37,16 @@ public final class App implements Callable<Integer> {
         Formatter formatter;
         switch (format) {
             case "stylish":
-                formatter = new Stylish();
+                formatter = new StylishFormatter();
                 break;
             case "plain":
-                formatter = new Plain();
+                formatter = new PlainFormatter();
+                break;
+            case "json":
+                formatter = new JsonFormatter();
                 break;
             default:
-                formatter = new Stylish();
+                formatter = new StylishFormatter();
         }
         Parser.setMapper(mapper);
         String diff = Parser.parse(new File(filepath1), new File(filepath2), formatter);

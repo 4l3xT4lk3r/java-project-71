@@ -1,8 +1,8 @@
 package hexlet.code;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hexlet.code.formatters.Plain;
-import hexlet.code.formatters.Stylish;
+import hexlet.code.formatters.PlainFormatter;
+import hexlet.code.formatters.StylishFormatter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +21,7 @@ public final class TestParserCommon {
     public void testParseFileNotExist() {
         File file1 = new File("FileNotExist.json");
         File file2 = new File("src/test/resources/nestedJsonFile1.json");
-        String actual = Parser.parse(file1, file2, new Stylish());
+        String actual = Parser.parse(file1, file2, new StylishFormatter());
         assertEquals("FileNotExist.json (No such file or directory)", actual);
     }
 
@@ -29,7 +29,7 @@ public final class TestParserCommon {
     public void testParseFileIsNull() {
         File file1 = null;
         File file2 = new File("src/test/resources/nestedJsonFile1.json");
-        String actual = Parser.parse(file1, file2, new Plain());
+        String actual = Parser.parse(file1, file2, new PlainFormatter());
         assertEquals("argument \"src\" is null", actual);
     }
 }

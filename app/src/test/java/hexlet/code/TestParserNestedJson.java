@@ -1,7 +1,8 @@
 package hexlet.code;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.formatters.Formatter;
-import hexlet.code.formatters.Stylish;
+import hexlet.code.formatters.StylishFormatter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +19,7 @@ public final class TestParserNestedJson {
 
     @BeforeEach
     public void init() {
-        formatter = new Stylish();
+        formatter = new StylishFormatter();
         file1 = new File("src/test/resources/plainJsonFile1.json");
         file2 = new File("src/test/resources/plainJsonFile2.json");
         expected = """
@@ -53,6 +54,7 @@ public final class TestParserNestedJson {
     public void testParseGoodNestedJson() {
         file1 = new File("src/test/resources/nestedJsonFile1.json");
         file2 = new File("src/test/resources/nestedJsonFile2.json");
+        Parser.setMapper(new ObjectMapper());
         String actual = Parser.parse(file1, file2, formatter);
         assertEquals(expected, actual);
     }

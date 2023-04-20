@@ -1,9 +1,7 @@
 package hexlet.code.formatters;
 
 import java.util.List;
-import java.util.ArrayList;
 import java.util.TreeMap;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public final class StylishFormatter extends Formatter {

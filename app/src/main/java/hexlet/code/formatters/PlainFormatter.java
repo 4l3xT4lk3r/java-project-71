@@ -12,12 +12,12 @@ public final class PlainFormatter extends Formatter {
 
     @Override
     public String format(TreeMap<String, TreeMap<Integer, Object>> diff) {
-        List<String> result = diff.entrySet()
+        List<String> res = diff.entrySet()
                 .stream()
                 .map(entry -> makeDiffString(entry.getKey(), entry.getValue()))
                 .filter(s -> !s.equals(""))
                 .collect(Collectors.toList());
-        return String.join("\n", result);
+        return String.join("\n", res);
     }
 
     private String makeDiffString(String key, TreeMap<Integer, Object> changes) {
@@ -37,18 +37,19 @@ public final class PlainFormatter extends Formatter {
         }
         return res;
     }
+
     private boolean isValueComplex(Object object) {
-        boolean result = true;
+        boolean res = true;
         if (object instanceof String) {
-            result = false;
+            res = false;
         } else if (object instanceof Integer || object instanceof Long) {
-            result = false;
+            res = false;
         } else if (object instanceof Float || object instanceof Double) {
-            result = false;
+            res = false;
         } else if (object instanceof Boolean) {
-            result = false;
+            res = false;
         }
-        return result;
+        return res;
     }
 
     private Object prepareValue(Object value) {
