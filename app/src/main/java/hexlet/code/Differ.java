@@ -16,8 +16,7 @@ public class Differ {
     private static final int ADD = 1;
     private static final int REMOVE = -1;
     private static final int SAME = 0;
-
-    private static ObjectMapper mapper;
+    private static ObjectMapper mapper = new ObjectMapper();
 
     public static void setMapper(ObjectMapper objectMapper) {
         mapper = objectMapper;
@@ -31,7 +30,7 @@ public class Differ {
             });
             map2 = mapper.readValue(new File(file2), new TypeReference<>() {
             });
-        }catch (NullPointerException | IllegalArgumentException | IOException exception){
+        } catch (NullPointerException | IllegalArgumentException | IOException exception) {
             return exception.getMessage();
         }
         TreeSet<String> keySet = new TreeSet<>(map1.keySet());
@@ -49,7 +48,7 @@ public class Differ {
             });
             map2 = mapper.readValue(new File(file2), new TypeReference<>() {
             });
-        }catch (NullPointerException | IllegalArgumentException | IOException exception){
+        } catch (NullPointerException | IllegalArgumentException | IOException exception) {
             return exception.getMessage();
         }
         TreeSet<String> keySet = new TreeSet<>(map1.keySet());
