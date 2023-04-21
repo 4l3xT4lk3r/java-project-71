@@ -1,26 +1,18 @@
 package hexlet.code;
 
-import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import hexlet.code.formatters.Formatter;
-import hexlet.code.formatters.StylishFormatter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public final class TestParserNestedYaml {
-    private File file1;
-    private File file2;
+public final class DifferTestNestedJsonStylish {
+    private String file1;
+    private String file2;
     private String expected;
-    private Formatter formatter;
-
     @BeforeEach
     public void init() {
-        formatter = new StylishFormatter();
-        file1 = new File("src/test/resources/plainYamlFile1.yml");
-        file2 = new File("src/test/resources/plainYamlFile2.yml");
+        file1 = "src/test/resources/nestedJsonFile1.json";
+        file2 = "src/test/resources/nestedJsonFile2.json";
         expected = """
                 {
                     chars1: [a, b, c]
@@ -50,11 +42,9 @@ public final class TestParserNestedYaml {
     }
 
     @Test
-    public void testParseGoodNestedYaml() {
-        file1 = new File("src/test/resources/nestedYamlFile1.yml");
-        file2 = new File("src/test/resources/nestedYamlFile2.yml");
-        Differ.setMapper(new YAMLMapper());
-        String actual = Differ.generate(file1, file2, formatter);
+    public void testParseGoodNestedJson() {
+        String actual = Differ.generate(file1, file2, "stylish");
         assertEquals(expected, actual);
     }
+
 }

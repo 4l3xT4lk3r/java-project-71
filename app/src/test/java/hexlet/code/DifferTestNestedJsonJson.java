@@ -1,26 +1,21 @@
 package hexlet.code;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hexlet.code.formatters.Formatter;
-import hexlet.code.formatters.JsonFormatter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public final class TestParserNestedJsonJson {
-    private File file1;
-    private File file2;
+public final class DifferTestNestedJsonJson {
+    private String file1;
+    private String file2;
     private String expected;
-    private Formatter formatter;
 
     @BeforeEach
     public void init() {
-        formatter = new JsonFormatter();
-        file1 = new File("src/test/resources/plainJsonFile1.json");
-        file2 = new File("src/test/resources/plainJsonFile2.json");
+        Differ.setMapper(new ObjectMapper());
+        file1 = "src/test/resources/nestedJsonFile1.json";
+        file2 = "src/test/resources/nestedJsonFile2.json";
         expected = """
                 [
                 {"op":"replace","path":"chars2","value":false},
@@ -41,10 +36,7 @@ public final class TestParserNestedJsonJson {
 
     @Test
     public void testParseGoodNestedJson() {
-        file1 = new File("src/test/resources/nestedJsonFile1.json");
-        file2 = new File("src/test/resources/nestedJsonFile2.json");
-        Differ.setMapper(new ObjectMapper());
-        String actual = Differ.generate(file1, file2, formatter);
+        String actual = Differ.generate(file1, file2, "json");
         assertEquals(expected, actual);
     }
 }

@@ -3,6 +3,9 @@ package hexlet.code;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.formatters.Formatter;
+import hexlet.code.formatters.JsonFormatter;
+import hexlet.code.formatters.PlainFormatter;
+import hexlet.code.formatters.StylishFormatter;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,22 +23,40 @@ public class Differ {
         mapper = objectMapper;
     }
 
-    public static String generate(File file1, File file2, Formatter formatter) {
+    public static String generate(String file1, String file2) {
         TreeMap<String, Object> map1;
         TreeMap<String, Object> map2;
         try {
-            map1 = mapper.readValue(file1, new TypeReference<>() {
+            map1 = mapper.readValue(new File(file1), new TypeReference<>() {
             });
-            map2 = mapper.readValue(file2, new TypeReference<>() {
+            map2 = mapper.readValue(new File(file2), new TypeReference<>() {
             });
-        } catch (IllegalArgumentException | IOException exception) {
+        }catch (NullPointerException | IllegalArgumentException | IOException exception){
             return exception.getMessage();
         }
         TreeSet<String> keySet = new TreeSet<>(map1.keySet());
         keySet.addAll(new TreeSet<>(map2.keySet()));
         TreeMap<String, TreeMap<Integer, Object>> diff = new TreeMap<>();
         keySet.forEach(key -> diff.put(key, getRecs(key, map1, map2)));
-        return formatter.format(diff);
+        return new StylishFormatter().format(diff);
+    }
+
+    public static String generate(String file1, String file2, String formatter) {
+        TreeMap<String, Object> map1;
+        TreeMap<String, Object> map2;
+        try {
+            map1 = mapper.readValue(new File(file1), new TypeReference<>() {
+            });
+            map2 = mapper.readValue(new File(file2), new TypeReference<>() {
+            });
+        }catch (NullPointerException | IllegalArgumentException | IOException exception){
+            return exception.getMessage();
+        }
+        TreeSet<String> keySet = new TreeSet<>(map1.keySet());
+        keySet.addAll(new TreeSet<>(map2.keySet()));
+        TreeMap<String, TreeMap<Integer, Object>> diff = new TreeMap<>();
+        keySet.forEach(key -> diff.put(key, getRecs(key, map1, map2)));
+        return getFormatter(formatter).format(diff);
     }
 
     private static TreeMap<Integer, Object> getRecs(String k, TreeMap<String, Object> m1, TreeMap<String, Object> m2) {
@@ -61,5 +82,20 @@ public class Differ {
 
     private static Object convertNull(Object object) {
         return object == null ? "null" : object;
+    }
+
+    private static Formatter getFormatter(String formatterName) {
+        Formatter formatter;
+        switch (formatterName) {
+            case "plain":
+                formatter = new PlainFormatter();
+                break;
+            case "json":
+                formatter = new JsonFormatter();
+                break;
+            default:
+                formatter = new StylishFormatter();
+        }
+        return formatter;
     }
 }

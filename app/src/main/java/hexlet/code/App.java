@@ -2,16 +2,10 @@ package hexlet.code;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import hexlet.code.formatters.Formatter;
-import hexlet.code.formatters.JsonFormatter;
-import hexlet.code.formatters.PlainFormatter;
-import hexlet.code.formatters.StylishFormatter;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
-
-import java.io.File;
 import java.util.concurrent.Callable;
 
 @Command(name = "gendiff", version = "gendiff 1.0", mixinStandardHelpOptions = true,
@@ -34,22 +28,8 @@ public final class App implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
         ObjectMapper mapper = fileType.equals("yaml") ? new YAMLMapper() : new ObjectMapper();
-        Formatter formatter;
-        switch (format) {
-            case "stylish":
-                formatter = new StylishFormatter();
-                break;
-            case "plain":
-                formatter = new PlainFormatter();
-                break;
-            case "json":
-                formatter = new JsonFormatter();
-                break;
-            default:
-                formatter = new StylishFormatter();
-        }
         Differ.setMapper(mapper);
-        String diff = Differ.generate(new File(filepath1), new File(filepath2), formatter);
+        String diff = Differ.generate(filepath1, filepath2, format);
         System.out.println(diff);
         return 0;
     }
