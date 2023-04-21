@@ -2,6 +2,7 @@ package hexlet.code;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import hexlet.code.formatters.Formatter;
 import hexlet.code.formatters.JsonFormatter;
 import hexlet.code.formatters.PlainFormatter;
@@ -16,7 +17,7 @@ public class Differ {
     private static final int ADD = 1;
     private static final int REMOVE = -1;
     private static final int SAME = 0;
-    private static ObjectMapper mapper = new ObjectMapper();
+    private static ObjectMapper mapper = new YAMLMapper();
 
     public static void setMapper(ObjectMapper objectMapper) {
         mapper = objectMapper;
