@@ -1,7 +1,5 @@
 package hexlet.code;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -11,11 +9,6 @@ import java.util.concurrent.Callable;
 @Command(name = "gendiff", version = "gendiff 1.0", mixinStandardHelpOptions = true,
         description = "Compares two configuration files and shows a difference.")
 public final class App implements Callable<Integer> {
-    @Option(names = {"-t", "--type"},
-            paramLabel = "file type",
-            description = "file format for comparing files json/yaml [default:json]",
-            defaultValue = "json")
-    private String fileType;
     @Option(names = {"-f", "--format"},
             paramLabel = "format",
             description = "output format [default: stylish]",
@@ -27,8 +20,6 @@ public final class App implements Callable<Integer> {
     private String filepath2;
     @Override
     public Integer call() throws Exception {
-        ObjectMapper mapper = fileType.equals("yaml") ? new YAMLMapper() : new ObjectMapper();
-        Differ.setMapper(mapper);
         String diff = Differ.generate(filepath1, filepath2, format);
         System.out.println(diff);
         return 0;

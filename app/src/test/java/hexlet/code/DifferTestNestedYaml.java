@@ -1,6 +1,5 @@
 package hexlet.code;
 
-import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,7 +11,6 @@ public final class DifferTestNestedYaml {
 
     @BeforeEach
     public void init() {
-        Differ.setMapper(new YAMLMapper());
         file1 = "src/test/resources/nestedYamlFile1.yml";
         file2 = "src/test/resources/nestedYamlFile2.yml";
         expected = """

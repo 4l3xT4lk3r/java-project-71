@@ -17,19 +17,20 @@ public class Differ {
     private static final int ADD = 1;
     private static final int REMOVE = -1;
     private static final int SAME = 0;
-    private static ObjectMapper mapper = new YAMLMapper();
-
-    public static void setMapper(ObjectMapper objectMapper) {
-        mapper = objectMapper;
-    }
 
     public static String generate(String file1, String file2) {
+        if (file1 == null || file2 == null) {
+            return null;
+        }
+        if (!isValidFile(file1) || !isValidFile(file2)) {
+            return "Wrong file! Check extension!";
+        }
         TreeMap<String, Object> map1;
         TreeMap<String, Object> map2;
         try {
-            map1 = mapper.readValue(new File(file1), new TypeReference<>() {
+            map1 = getMapper(file1).readValue(new File(file1), new TypeReference<>() {
             });
-            map2 = mapper.readValue(new File(file2), new TypeReference<>() {
+            map2 = getMapper(file2).readValue(new File(file2), new TypeReference<>() {
             });
         } catch (NullPointerException | IllegalArgumentException | IOException exception) {
             return exception.getMessage();
@@ -42,12 +43,18 @@ public class Differ {
     }
 
     public static String generate(String file1, String file2, String formatter) {
+        if (file1 == null || file2 == null) {
+            return null;
+        }
+        if (!isValidFile(file1) || !isValidFile(file2)) {
+            return "Wrong file! Check extension!";
+        }
         TreeMap<String, Object> map1;
         TreeMap<String, Object> map2;
         try {
-            map1 = mapper.readValue(new File(file1), new TypeReference<>() {
+            map1 = getMapper(file1).readValue(new File(file1), new TypeReference<>() {
             });
-            map2 = mapper.readValue(new File(file2), new TypeReference<>() {
+            map2 = getMapper(file2).readValue(new File(file2), new TypeReference<>() {
             });
         } catch (NullPointerException | IllegalArgumentException | IOException exception) {
             return exception.getMessage();
@@ -82,6 +89,17 @@ public class Differ {
 
     private static Object convertNull(Object object) {
         return object == null ? "null" : object;
+    }
+
+    private static boolean isValidFile(String file) {
+        return file.endsWith(".json") || file.endsWith("yml");
+    }
+
+    private static ObjectMapper getMapper(String file) {
+        if (file.endsWith(".yml")) {
+            return new YAMLMapper();
+        }
+        return new ObjectMapper();
     }
 
     private static Formatter getFormatter(String formatterName) {

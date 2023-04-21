@@ -1,6 +1,5 @@
 package hexlet.code;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +12,6 @@ public final class DifferTestCommon {
 
     @BeforeEach
     public void init() {
-        Differ.setMapper(new ObjectMapper());
         file2 = "src/test/resources/nestedJsonFile1.json";
     }
 
