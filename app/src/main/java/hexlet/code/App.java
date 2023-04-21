@@ -49,7 +49,7 @@ public final class App implements Callable<Integer> {
                 formatter = new StylishFormatter();
         }
         Differ.setMapper(mapper);
-        String diff = Differ.parse(new File(filepath1), new File(filepath2), formatter);
+        String diff = Differ.generate(new File(filepath1), new File(filepath2), formatter);
         System.out.println(diff);
         return 0;
     }

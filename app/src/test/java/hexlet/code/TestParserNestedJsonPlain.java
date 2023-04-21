@@ -42,7 +42,7 @@ public final class TestParserNestedJsonPlain {
         file1 = new File("src/test/resources/nestedJsonFile1.json");
         file2 = new File("src/test/resources/nestedJsonFile2.json");
         Differ.setMapper(new ObjectMapper());
-        String actual = Differ.parse(file1, file2, formatter);
+        String actual = Differ.generate(file1, file2, formatter);
         assertEquals(expected, actual);
     }
 }

@@ -12,7 +12,7 @@ import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class DifferTest {
+public final class DifferTest {
     private File file1;
     private File file2;
     private String expected;
@@ -37,26 +37,26 @@ public class DifferTest {
     @Test
     public void testParseFileNotExist() {
         file1 = new File("FileNotExist.json");
-        String actual = Differ.parse(file1, file2, new StylishFormatter());
+        String actual = Differ.generate(file1, file2, new StylishFormatter());
         assertEquals("FileNotExist.json (No such file or directory)", actual);
     }
 
     @Test
     public void testParseFileIsNull() {
         file2 = new File("src/test/resources/nestedJsonFile1.json");
-        String actual = Differ.parse(null, file2, new PlainFormatter());
+        String actual = Differ.generate(null, file2, new PlainFormatter());
         assertEquals("argument \"src\" is null", actual);
     }
     @Test
     public void testParseGoodPlainJson() {
-        String actual = Differ.parse(file1, file2, formatter);
+        String actual = Differ.generate(file1, file2, formatter);
         assertEquals(expected, actual);
     }
 
     @Test
     public void testParseWrongJson() {
         file1 = new File("src/test/resources/plainWrongJsonFile.json");
-        String actual = Differ.parse(file1, file2, formatter);
+        String actual = Differ.generate(file1, file2, formatter);
         expected = "Unexpected character ('\"' (code 34)): was expecting comma to separate Object entries\n"
                 + " at [Source: (File); line: 3, column: 4]";
         assertEquals(expected, actual);
@@ -75,13 +75,13 @@ public class DifferTest {
         file1 = new File("src/test/resources/plainYamlFile1.yml");
         file2 = new File("src/test/resources/plainYamlFile2.yml");
         Differ.setMapper(new YAMLMapper());
-        String actual = Differ.parse(file1, file2, formatter);
+        String actual = Differ.generate(file1, file2, formatter);
         assertEquals(expected, actual);
     }
     @Test
     public void testParseGoodEqualYaml() {
         Differ.setMapper(new YAMLMapper());
-        String actual = Differ.parse(file1, file1, formatter);
+        String actual = Differ.generate(file1, file1, formatter);
         expected = """
                 {
                     follow: false
@@ -103,7 +103,7 @@ public class DifferTest {
 
                  at [Source: (File); line: 2, column: 12]""";
         Differ.setMapper(new YAMLMapper());
-        String actual = Differ.parse(file1, file2, formatter);
+        String actual = Differ.generate(file1, file2, formatter);
         assertEquals(expected, actual);
     }
 }

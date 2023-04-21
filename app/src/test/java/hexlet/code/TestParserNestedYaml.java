@@ -54,7 +54,7 @@ public final class TestParserNestedYaml {
         file1 = new File("src/test/resources/nestedYamlFile1.yml");
         file2 = new File("src/test/resources/nestedYamlFile2.yml");
         Differ.setMapper(new YAMLMapper());
-        String actual = Differ.parse(file1, file2, formatter);
+        String actual = Differ.generate(file1, file2, formatter);
         assertEquals(expected, actual);
     }
 }

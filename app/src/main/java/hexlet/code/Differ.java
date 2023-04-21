@@ -20,7 +20,7 @@ public class Differ {
         mapper = objectMapper;
     }
 
-    public static String parse(File file1, File file2, Formatter formatter) {
+    public static String generate(File file1, File file2, Formatter formatter) {
         TreeMap<String, Object> map1;
         TreeMap<String, Object> map2;
         try {
