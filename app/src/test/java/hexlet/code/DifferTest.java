@@ -1,7 +1,11 @@
 package hexlet.code;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -10,18 +14,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public final class DifferTest {
-    private String jsonFile1;
-    private String jsonFile2;
-    private String yamlFile1;
-    private String yamlFile2;
-    private String expectedStylish;
-    private String expectedPlain;
-    private String expectedJson;
-    @BeforeEach
-    public void init() throws IOException {
-        expectedStylish = new String(Files.readAllBytes(Paths.get("src/test/resources/expectedStylish.txt")));
-        expectedPlain = new String(Files.readAllBytes(Paths.get("src/test/resources/expectedPlain.txt")));
-        expectedJson = new String(Files.readAllBytes(Paths.get("src/test/resources/expectedJson.txt")));
+    private static String jsonFile1;
+    private static String jsonFile2;
+    private static String yamlFile1;
+    private static String yamlFile2;
+    private static String expectedStylish;
+    private static String expectedPlain;
+    private static String expectedJson;
+
+    private static String readStringFromFile(String filepath) throws IOException {
+        return new String(Files.readAllBytes(Paths.get(filepath)));
+    }
+
+    @BeforeAll
+    public static void init() throws IOException {
+        expectedStylish = readStringFromFile("src/test/resources/expectedStylish.txt");
+        expectedPlain = readStringFromFile("src/test/resources/expectedPlain.txt");
+        expectedJson = readStringFromFile("src/test/resources/expectedJson.txt");
         jsonFile1 = "src/test/resources/nestedJsonFile1.json";
         jsonFile2 = "src/test/resources/nestedJsonFile2.json";
         yamlFile1 = "src/test/resources/nestedYamlFile1.yml";
@@ -39,46 +48,40 @@ public final class DifferTest {
         assertNull(Differ.generate(null, jsonFile2, "plain"));
     }
 
-    @Test
-    public void differTestJsonDefault() {
-        String actual = Differ.generate(jsonFile1, jsonFile2);
+    @ParameterizedTest
+    @ValueSource(strings = {"json", "yaml"})
+    public void differTestDefault(String fileType) {
+        String actual;
+        if (fileType.equals("json")) {
+            actual = Differ.generate(jsonFile1, jsonFile2);
+        } else {
+            actual = Differ.generate(yamlFile1, yamlFile2);
+        }
         assertEquals(expectedStylish, actual);
     }
 
-    @Test
-    public void differTestJsonStylish() {
-        String actual = Differ.generate(jsonFile1, jsonFile2, "stylish");
-        assertEquals(expectedStylish, actual);
-    }
-
-    @Test
-    public void differTestJsonPlain() {
-        String actual = Differ.generate(jsonFile1, jsonFile2, "plain");
-        assertEquals(expectedPlain, actual);
-    }
-    @Test
-    public void differTestJsonJson() {
-        String actual = Differ.generate(jsonFile1, jsonFile2, "json");
-        assertEquals(expectedJson, actual);
-    }
-    @Test
-    public void differTestYamlDefault() {
-        String actual = Differ.generate(yamlFile1, yamlFile2);
-        assertEquals(expectedStylish, actual);
-    }
-    @Test
-    public void differTestYamlStylish() {
-        String actual = Differ.generate(yamlFile1, yamlFile2, "stylish");
-        assertEquals(expectedStylish, actual);
-    }
-    @Test
-    public void differTestYamlPlain() {
-        String actual = Differ.generate(yamlFile1, yamlFile2, "plain");
-        assertEquals(expectedPlain, actual);
-    }
-    @Test
-    public void differTestYamlJson() {
-        String actual = Differ.generate(yamlFile1, yamlFile2, "json");
-        assertEquals(expectedJson, actual);
+    @ParameterizedTest
+    @CsvSource({
+        "json, stylish",
+        "json, plain",
+        "json, json",
+        "yaml, stylish",
+        "yaml, plain",
+        "yaml, json",
+    })
+    public void differTest(String fileType, String formatter) {
+        String actual;
+        String expected;
+        if (fileType.equals("json")) {
+            actual = Differ.generate(jsonFile1, jsonFile2, formatter);
+        } else {
+            actual = Differ.generate(yamlFile1, yamlFile2, formatter);
+        }
+        expected = switch (formatter) {
+            case "plain" -> expectedPlain;
+            case "json" -> expectedJson;
+            default -> expectedStylish;
+        };
+        assertEquals(expected, actual);
     }
 }
