@@ -1,0 +1,15 @@
+[
+{"op":"replace","path":"chars2","value":false},
+{"op":"replace","path":"checked","value":true},
+{"op":"replace","path":"default","value":["value1","value2"]},
+{"op":"replace","path":"id","value":null},
+{"op":"remove","path":"key1","value":"value1"},
+{"op":"add","path":"key2","value":"value2"},
+{"op":"replace","path":"numbers2","value":[22,33,44,55]},
+{"op":"remove","path":"numbers3","value":[3,4,5]},
+{"op":"add","path":"numbers4","value":[4,5,6]},
+{"op":"add","path":"obj1","value":{"nestedKey":"value","isNested":true}},
+{"op":"replace","path":"setting1","value":"Another value"},
+{"op":"replace","path":"setting2","value":300},
+{"op":"replace","path":"setting3","value":"none"}
+]
