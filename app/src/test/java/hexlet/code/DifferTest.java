@@ -5,12 +5,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public final class DifferTest {
@@ -38,19 +39,23 @@ public final class DifferTest {
     }
 
     @Test
-    public void testParseFileNotExist() {
-        String actual = Differ.generate("FileNotExist.json", jsonFile2, "stylish");
-        assertEquals("FileNotExist.json (No such file or directory)", actual);
+    public void differTestFileNotExist() {
+        IOException thrown = assertThrows(
+                IOException.class,
+                () -> Differ.generate("FileNotExist.json", jsonFile2, "stylish"),
+                "FileNotExist.json (No such file or directory)"
+        );
+        assertTrue(thrown.getMessage().contentEquals("FileNotExist.json (No such file or directory)"));
     }
 
     @Test
-    public void testParseFileIsNull() {
+    public void differTestFileIsNull() throws IOException {
         assertNull(Differ.generate(null, jsonFile2, "plain"));
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"json", "yaml"})
-    public void differTestDefault(String fileType) {
+    public void differTestDefault(String fileType) throws IOException {
         String actual;
         if (fileType.equals("json")) {
             actual = Differ.generate(jsonFile1, jsonFile2);
@@ -69,7 +74,7 @@ public final class DifferTest {
         "yaml, plain",
         "yaml, json",
     })
-    public void differTest(String fileType, String formatter) {
+    public void differTest(String fileType, String formatter) throws IOException {
         String actual;
         String expected;
         if (fileType.equals("json")) {

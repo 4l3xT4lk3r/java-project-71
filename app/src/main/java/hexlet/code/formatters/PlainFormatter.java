@@ -5,11 +5,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public final class PlainFormatter extends Formatter {
-
     private static final int ADD = 1;
     private static final int REMOVE = -1;
     private static final int UPDATE = -11;
-
     @Override
     public String format(TreeMap<String, TreeMap<Integer, Object>> diff) {
         List<String> res = diff.entrySet()

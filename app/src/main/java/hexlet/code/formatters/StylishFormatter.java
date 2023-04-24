@@ -9,7 +9,6 @@ public final class StylishFormatter extends Formatter {
     private static final int ADD = 1;
     private static final int REMOVE = -1;
     private static final int UPDATE = -11;
-
     private static final int SAME = 0;
 
     @Override
