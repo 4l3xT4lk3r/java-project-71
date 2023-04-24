@@ -19,27 +19,7 @@ public class Differ {
     private static final int SAME = 0;
 
     public static String generate(String file1, String file2) {
-        if (file1 == null || file2 == null) {
-            return null;
-        }
-        if (!isValidFile(file1) || !isValidFile(file2)) {
-            return "Wrong file! Check extension!";
-        }
-        TreeMap<String, Object> map1;
-        TreeMap<String, Object> map2;
-        try {
-            map1 = getMapper(file1).readValue(new File(file1), new TypeReference<>() {
-            });
-            map2 = getMapper(file2).readValue(new File(file2), new TypeReference<>() {
-            });
-        } catch (NullPointerException | IllegalArgumentException | IOException exception) {
-            return exception.getMessage();
-        }
-        TreeSet<String> keySet = new TreeSet<>(map1.keySet());
-        keySet.addAll(new TreeSet<>(map2.keySet()));
-        TreeMap<String, TreeMap<Integer, Object>> diff = new TreeMap<>();
-        keySet.forEach(key -> diff.put(key, getRecs(key, map1, map2)));
-        return new StylishFormatter().format(diff);
+        return generate(file1, file2, "stylish");
     }
 
     public static String generate(String file1, String file2, String formatter) {
