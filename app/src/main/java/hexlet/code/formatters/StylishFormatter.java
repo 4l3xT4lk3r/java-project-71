@@ -1,37 +1,32 @@
 package hexlet.code.formatters;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.TreeMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
-public final class StylishFormatter extends Formatter {
-
-    private static final int ADD = 1;
-    private static final int REMOVE = -1;
-    private static final int UPDATE = -11;
-    private static final int SAME = 0;
-
+public final class StylishFormatter implements Formatter {
     @Override
-    public String format(TreeMap<String, TreeMap<Integer, Object>> diff) {
+    public String format(TreeMap<String, HashMap<String, Object>> diff) {
         List<String> list = diff.entrySet()
                 .stream()
                 .map(entry -> makeDiffString(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
         return "{\n" + String.join("\n", list) + "\n}";
     }
-    private String makeDiffString(String key, TreeMap<Integer, Object> changes) {
+
+    private String makeDiffString(String key, HashMap<String, Object> changes) {
         String res;
-        String changesSignature = changes.keySet().stream().map(Object::toString).collect(Collectors.joining());
-        if (changesSignature.equals(Integer.toString(ADD))) {
-            res = String.format("\s\s+ %s: %s", key, changes.get(ADD));
-        } else if (changesSignature.equals(Integer.toString(REMOVE))) {
-            res = String.format("\s\s- %s: %s", key, changes.get(REMOVE));
-        } else if (changesSignature.equals(Integer.toString(UPDATE))) {
-            res = String.format(String.format("\s\s- %s: %s", key, changes.get(REMOVE)))
+        if (changes.get("STATUS").equals("ADDED")) {
+            res = String.format("\s\s+ %s: %s", key, changes.get("NEW_VALUE"));
+        } else if (changes.get("STATUS").equals("REMOVED")) {
+            res = String.format("\s\s- %s: %s", key, changes.get("OLD_VALUE"));
+        } else if (changes.get("STATUS").equals("UPDATED")) {
+            res = String.format(String.format("\s\s- %s: %s", key, changes.get("OLD_VALUE")))
                     + "\n"
-                    + String.format("\s\s+ %s: %s", key, changes.get(ADD));
+                    + String.format("\s\s+ %s: %s", key, changes.get("NEW_VALUE"));
         } else {
-            res = String.format("\s\s\s\s%s: %s", key, changes.get(SAME));
+            res = String.format("\s\s\s\s%s: %s", key, changes.get("OLD_VALUE"));
         }
         return res;
     }

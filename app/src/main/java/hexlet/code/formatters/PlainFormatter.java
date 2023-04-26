@@ -1,15 +1,13 @@
 package hexlet.code.formatters;
 
-import java.util.TreeMap;
+import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-public final class PlainFormatter extends Formatter {
-    private static final int ADD = 1;
-    private static final int REMOVE = -1;
-    private static final int UPDATE = -11;
+public final class PlainFormatter implements Formatter {
     @Override
-    public String format(TreeMap<String, TreeMap<Integer, Object>> diff) {
+    public String format(TreeMap<String, HashMap<String, Object>> diff) {
         List<String> res = diff.entrySet()
                 .stream()
                 .map(entry -> makeDiffString(entry.getKey(), entry.getValue()))
@@ -18,17 +16,16 @@ public final class PlainFormatter extends Formatter {
         return String.join("\n", res);
     }
 
-    private String makeDiffString(String key, TreeMap<Integer, Object> changes) {
+    private String makeDiffString(String key, HashMap<String, Object> changes) {
         String res;
-        String changesSignature = changes.keySet().stream().map(Object::toString).collect(Collectors.joining());
-        if (changesSignature.equals(Integer.toString(ADD))) {
-            Object value = prepareValue(changes.get(ADD));
+        if (changes.get("STATUS").equals("ADDED")) {
+            Object value = prepareValue(changes.get("NEW_VALUE"));
             res = String.format("Property '%s' was added with value: %s", key, value);
-        } else if (changesSignature.equals(Integer.toString(REMOVE))) {
+        } else if (changes.get("STATUS").equals("REMOVED")) {
             res = String.format("Property '%s' was removed", key);
-        } else if (changesSignature.equals(Integer.toString(UPDATE))) {
-            Object valueRemove = prepareValue(changes.get(REMOVE));
-            Object valueAdd = prepareValue(changes.get(ADD));
+        } else if (changes.get("STATUS").equals("UPDATED")) {
+            Object valueRemove = prepareValue(changes.get("OLD_VALUE"));
+            Object valueAdd = prepareValue(changes.get("NEW_VALUE"));
             res = String.format("Property '%s' was updated. From %s to %s", key, valueRemove, valueAdd);
         } else {
             res = "";

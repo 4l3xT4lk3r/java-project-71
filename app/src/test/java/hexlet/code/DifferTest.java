@@ -42,10 +42,10 @@ public final class DifferTest {
     public void differTestFileNotExist() {
         IOException thrown = assertThrows(
                 IOException.class,
-                () -> Differ.generate("FileNotExist.json", jsonFile2, "stylish"),
-                "FileNotExist.json (No such file or directory)"
+                () -> Differ.generate("FileNotExist.json", jsonFile2, "stylish")
+
         );
-        assertTrue(thrown.getMessage().contentEquals("FileNotExist.json (No such file or directory)"));
+        assertTrue(thrown.getMessage().contentEquals("FileNotExist.json"));
     }
 
     @Test
