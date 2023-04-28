@@ -2,6 +2,7 @@ package hexlet.code.formatters;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
@@ -34,19 +35,7 @@ public final class PlainFormatter implements Formatter {
     }
 
     private boolean isValueComplex(Object object) {
-        boolean res = true;
-        if (object instanceof String) {
-            res = false;
-        } else if (object instanceof Integer || object instanceof Long) {
-            res = false;
-        } else if (object instanceof Float || object instanceof Double) {
-            res = false;
-        } else if (object instanceof Boolean) {
-            res = false;
-        } else if (object == null) {
-            res = false;
-        }
-        return res;
+        return object instanceof Map || object instanceof List;
     }
 
     private Object prepareValue(Object value) {
