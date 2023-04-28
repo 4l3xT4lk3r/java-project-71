@@ -10,13 +10,11 @@ import java.util.TreeMap;
 public class Parser {
 
     public static TreeMap<String, Object> mapData(String string, String fileExtension) throws IOException {
-        ObjectMapper mapper;
-
-        if (fileExtension.equals("yml") || fileExtension.equals("yaml")) {
-            mapper = new YAMLMapper();
-        } else {
-            mapper = new JsonMapper();
-        }
+        ObjectMapper mapper = switch (fileExtension) {
+            case "yml", "yaml" -> new YAMLMapper();
+            case "json" -> new JsonMapper();
+            default -> throw new IOException();
+        };
         return mapper.readValue(string, new TypeReference<>() {
         });
     }
