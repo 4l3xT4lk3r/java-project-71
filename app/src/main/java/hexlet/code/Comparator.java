@@ -27,22 +27,13 @@ public class Comparator {
         } else if (!map1.containsKey(key)) {
             res.put("STATUS", "ADDED");
             res.put("NEW_VALUE", map2.get(key));
+        } else if (Objects.equals(value1, value2)) {
+            res.put("STATUS", "SAME");
+            res.put("OLD_VALUE", map1.get(key));
         } else {
-            if (Objects.equals(value1, value2)) {
-                res.put("STATUS", "SAME");
-                res.put("OLD_VALUE", map1.get(key));
-            } else if (value1 == null || value2 == null) {
-                res.put("STATUS", "UPDATED");
-                res.put("OLD_VALUE", map1.get(key));
-                res.put("NEW_VALUE", map2.get(key));
-            } else if (value1.toString().equals(value2.toString())) {
-                res.put("STATUS", "SAME");
-                res.put("OLD_VALUE", map1.get(key));
-            } else {
-                res.put("STATUS", "UPDATED");
-                res.put("OLD_VALUE", map1.get(key));
-                res.put("NEW_VALUE", map2.get(key));
-            }
+            res.put("STATUS", "UPDATED");
+            res.put("OLD_VALUE", map1.get(key));
+            res.put("NEW_VALUE", map2.get(key));
         }
         return res;
     }
