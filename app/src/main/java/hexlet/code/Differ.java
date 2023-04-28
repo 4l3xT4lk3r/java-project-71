@@ -15,9 +15,6 @@ public class Differ {
         if (file1 == null || file2 == null) {
             return null;
         }
-        if (!isValidFile(file1) || !isValidFile(file2)) {
-            return "Wrong file! Check extension!";
-        }
         String string1 = readStringFromFile(file1);
         String string2 = readStringFromFile(file2);
         String fileExt1 = getFileExtension(file1);
@@ -26,10 +23,6 @@ public class Differ {
         TreeMap<String, Object> map2 = Parser.mapData(string2, fileExt2);
         TreeMap<String, HashMap<String, Object>> diff = Comparator.getDiffMap(map1, map2);
         return FormatterUtil.format(diff, formatter);
-    }
-
-    private static boolean isValidFile(String file) {
-        return file.endsWith(".json") || file.endsWith("yml");
     }
 
     private static String readStringFromFile(String filepath) throws IOException {
