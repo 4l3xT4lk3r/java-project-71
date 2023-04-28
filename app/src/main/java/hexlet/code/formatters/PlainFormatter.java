@@ -20,13 +20,13 @@ public final class PlainFormatter implements Formatter {
     private String makeDiffString(String key, HashMap<String, Object> changes) {
         String res;
         if (changes.get("STATUS").equals("ADDED")) {
-            Object value = prepareValue(changes.get("NEW_VALUE"));
+            String value = prepareValue(changes.get("NEW_VALUE"));
             res = String.format("Property '%s' was added with value: %s", key, value);
         } else if (changes.get("STATUS").equals("REMOVED")) {
             res = String.format("Property '%s' was removed", key);
         } else if (changes.get("STATUS").equals("UPDATED")) {
-            Object valueRemove = prepareValue(changes.get("OLD_VALUE"));
-            Object valueAdd = prepareValue(changes.get("NEW_VALUE"));
+            String valueRemove = prepareValue(changes.get("OLD_VALUE"));
+            String valueAdd = prepareValue(changes.get("NEW_VALUE"));
             res = String.format("Property '%s' was updated. From %s to %s", key, valueRemove, valueAdd);
         } else {
             res = "";
@@ -38,12 +38,11 @@ public final class PlainFormatter implements Formatter {
         return object instanceof Map || object instanceof List;
     }
 
-    private Object prepareValue(Object value) {
-        Object res = value;
+    private String prepareValue(Object value) {
+        String res = (value == null) ? null : value.toString();
         if (value instanceof String) {
             res = "'" + value + "'";
-        }
-        if (isValueComplex(value)) {
+        } else if (isValueComplex(value)) {
             res = "[complex value]";
         }
         return res;
