@@ -16,18 +16,14 @@ public final class StylishFormatter implements Formatter {
     }
 
     private String makeDiffString(String key, HashMap<String, Object> changes) {
-        String res;
-        if (changes.get("STATUS").equals("ADDED")) {
-            res = String.format("\s\s+ %s: %s", key, changes.get("NEW_VALUE"));
-        } else if (changes.get("STATUS").equals("REMOVED")) {
-            res = String.format("\s\s- %s: %s", key, changes.get("OLD_VALUE"));
-        } else if (changes.get("STATUS").equals("UPDATED")) {
-            res = String.format(String.format("\s\s- %s: %s", key, changes.get("OLD_VALUE")))
+        String res = switch ((String) changes.get("STATUS")) {
+            case "ADDED" -> String.format("\s\s+ %s: %s", key, changes.get("NEW_VALUE"));
+            case "REMOVED" -> String.format("\s\s- %s: %s", key, changes.get("OLD_VALUE"));
+            case "UPDATED" -> String.format(String.format("\s\s- %s: %s", key, changes.get("OLD_VALUE")))
                     + "\n"
                     + String.format("\s\s+ %s: %s", key, changes.get("NEW_VALUE"));
-        } else {
-            res = String.format("\s\s\s\s%s: %s", key, changes.get("OLD_VALUE"));
-        }
+            default -> String.format("\s\s\s\s%s: %s", key, changes.get("OLD_VALUE"));
+        };
         return res;
     }
 }
