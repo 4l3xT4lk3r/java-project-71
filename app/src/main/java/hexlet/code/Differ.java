@@ -15,13 +15,13 @@ public class Differ {
         if (file1 == null || file2 == null) {
             return null;
         }
-        String string1 = readStringFromFile(file1);
-        String string2 = readStringFromFile(file2);
-        String fileExt1 = getFileExtension(file1);
-        String fileExt2 = getFileExtension(file2);
-        TreeMap<String, Object> map1 = Parser.mapData(string1, fileExt1);
-        TreeMap<String, Object> map2 = Parser.mapData(string2, fileExt2);
-        TreeMap<String, HashMap<String, Object>> diff = Comparator.getDiffMap(map1, map2);
+        String structureFromFile1 = readStringFromFile(file1);
+        String structureFromFile2 = readStringFromFile(file2);
+        String fileExtension1 = getFileExtension(file1);
+        String fileExtension2 = getFileExtension(file2);
+        TreeMap<String, Object> treeForStructure1 = Parser.mapData(structureFromFile1, fileExtension1);
+        TreeMap<String, Object> treeForStructure2 = Parser.mapData(structureFromFile2, fileExtension2);
+        TreeMap<String, HashMap<String, Object>> diff = Comparator.getDiffMap(treeForStructure1, treeForStructure2);
         return FormatterUtil.format(diff, formatter);
     }
 
